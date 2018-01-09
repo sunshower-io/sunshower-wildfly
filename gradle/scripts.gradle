@@ -1,0 +1,59 @@
+
+
+
+task copyWildfly(type: Copy) {
+    dependsOn configurations.wildfly
+
+    configurations.wildfly.each {
+        from( zipTree(it) )
+    }
+    into file("${project.buildDir}/dist")
+
+}
+
+
+
+task overlayStandalone(type:Copy) {
+    from fileTree("${project.projectDir}/wildfly-dist/resources")
+    into file("${project.buildDir}/dist/wildfly-11.0.0.Final/standalone/configuration")
+}
+
+task overlay(type:Copy) {
+
+
+
+
+    from fileTree("${project.buildDir}/install/wildfly11.0.0")
+    into file("${project.buildDir}/dist/wildfly-11.0.0.Final")
+
+    doLast {
+        def slurper = new groovy.util.XmlSlurper(false, false)
+
+        def f = file(
+                "${project.buildDir}/dist/wildfly-11.0.0.Final/" +
+                        "modules/system/layers/base/org/jboss/" +
+                        "resteasy/resteasy-validator-provider-11/main/module.xml")
+
+        def t = slurper.parseText(f.text)
+        t.dependencies.appendNode({module(name:'org.eclipse.moxy')})
+
+
+        def bound = new groovy.xml.StreamingMarkupBuilder().bind { mkp.yield t }
+        def serialize = groovy.xml.XmlUtil.serialize(bound)
+        f.write(serialize)
+
+
+    }
+}
+
+task createDistribution(type:Zip, dependsOn:['copyWildfly', 'overlay', 'overlayStandalone']) {
+    from "${project.buildDir}/dist/wildfly-11.0.0.Final"
+    into "sunshower-wildfly"
+}
+
+
+task assembleAll(dependsOn: ['wildfly11.0.0DistZip', 'createDistribution', 'distZip']) {
+}
+
+build.dependsOn 'assembleAll'
+

@@ -1,0 +1,37 @@
+buildscript {
+    apply from: 'gradle/buildscript.gradle', to: buildscript
+}
+
+
+
+apply plugin: 'java'
+apply from: 'gradle/publishing.gradle'
+
+apply plugin: 'distribution'
+apply plugin: 'com.github.zhurlik.jbossmodules'
+apply from: 'gradle/wildflymodules.gradle'
+apply from: 'gradle/dependencies.gradle'
+apply from: 'gradle/scripts.gradle'
+
+
+distZip {
+    doLast {
+        file("${project.buildDir}/distributions/$archiveName").renameTo("${project.buildDir}/distributions/"+baseName+'-'+version+'.zip')
+    }
+}
+
+distributions {
+    main {
+        baseName = 'sunshower-wildfly'
+        contents {
+            from {
+                "${project.buildDir}/dist/wildfly-${version}.Final"
+            }
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = gradleWrapperVersion
+}
+

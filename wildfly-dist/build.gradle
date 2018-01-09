@@ -1,0 +1,3 @@
+
+
+defaultTasks 'clean', 'copyWildfly', 'overlay', 'distZip'

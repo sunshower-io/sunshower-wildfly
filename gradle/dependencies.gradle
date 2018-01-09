@@ -1,0 +1,144 @@
+def repos = [
+        'http://repo.spring.io/snapshot',
+        "http://repo.spring.io/libs-milestone",
+        "http://oss.sonatype.org/content/repositories/snapshots",
+        "http://www.gridgainsystems.com/nexus/content/repositories/external"
+]
+
+
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+
+    repos.each { repo ->
+        maven { url "$repo" }
+    }
+    ivy {
+        url "http://download.jboss.org/wildfly"
+        layout "pattern", {
+            artifact "[revision]/[module]-[revision].[ext]"
+        }
+    }
+}
+
+configurations {
+    wildfly
+    configurations.all {
+        exclude module: 'spring-boot-starter-tomcat'
+    }
+}
+
+dependencies {
+    
+    wildfly group: 'io.sunshower', name: 'wildfly', version: '11.0.0.Final', ext: 'zip'
+    jbossmodules group: 'org.postgresql', name: 'postgresql', version: postgresJdbcVersion
+    jbossmodules group: 'aopalliance', name: 'aopalliance', version: '1.0'
+    jbossmodules group: 'org.javassist', name: 'javassist', version: javassistVersion 
+
+    jbossmodules "net.bytebuddy:byte-buddy:$bytebuddyVersion"
+    jbossmodules group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion
+    jbossmodules group: 'org.hibernate', name: 'hibernate-envers', version: hibernateVersion
+    jbossmodules group: 'org.wildfly', name: 'jipijapa-hibernate5', version: jipijapaVersion
+
+    jbossmodules "org.atmosphere:atmosphere-runtime:$atmosphereVersion"
+
+    [
+            'core',
+            'config',
+            'acl',
+            'crypto',
+            'aspects',
+            'ldap'
+    ].each {
+        jbossmodules "org.springframework.security:spring-security-$it:${springSecurityVersion}"
+    }
+    
+    [
+            'spring-boot',
+            'spring-boot-starter-web',
+            'spring-boot-starter-undertow',
+            'spring-boot-starter-cache',
+            'spring-boot-starter-jersey',
+            'spring-boot-autoconfigure',
+            'spring-boot-starter',
+            'spring-boot-configuration-processor'
+    ].each {
+        jbossmodules "org.springframework.boot:$it:$springBootVersion"
+    }
+    
+    
+    [
+            'ignite-core',
+            'ignite-spring',
+            'ignite-indexing',
+            'ignite-hibernate-core',
+            'ignite-hibernate_5.1'
+    ].each {
+        jbossmodules "org.apache.ignite:$it:$igniteVersion"
+    }
+    
+    [
+            'jersey-client',
+            'jersey-server',
+            'jersey-common',
+
+    ].each {
+        jbossmodules "org.glassfish.jersey.core:$it:$jerseyVersion"
+    }
+    
+    [
+            'jersey-media-core'
+
+    ].each {
+        jbossmodules "org.glassfish.jersey.media:jersey-media-moxy:$jerseyVersion"
+    }
+
+
+    [
+            'web',
+            'context-support',
+            'jdbc',
+            'oxm',
+            'orm',
+            'jms',
+            'webmvc',
+            'websocket',
+            'context'
+    ].each {
+        jbossmodules "org.springframework:spring-${it}:${springVersion}"
+    }
+    
+    [
+            'gremlin-core',
+            'tinkergraph-gremlin'
+    ].each {
+        jbossmodules "org.apache.tinkerpop:$it:$tinkerpopVersion"
+    }
+
+    compile group: 'org.hibernate.common', name: 'hibernate-commons-annotations', version: hibernateCommonsAnnotationsVersion
+
+
+    jbossmodules "org.aspectj:aspectjweaver:${aspectJVersion}"
+
+    jbossmodules "org.flywaydb:flyway-core:$flywayVersion"
+
+    jbossmodules "org.apache.logging.log4j:log4j-api:2.7"
+    jbossmodules "org.apache.logging.log4j:log4j-core:2.7"
+
+    jbossmodules "javax.ws.rs:javax.ws.rs-api:$jaxrsApiVersion"
+
+    jbossmodules "org.reactivestreams:reactive-streams:$reactiveStreamsVersion"
+    jbossmodules "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    jbossmodules group: 'javax.cache', name: 'cache-api', version: '1.1.0'
+
+    jbossmodules 'com.caucho:hessian:4.0.38'
+    jbossmodules 'com.thoughtworks.xstream:xstream:1.4.7'
+    jbossmodules 'org.apache.camel:camel-core:2.15.1'
+    jbossmodules 'org.springframework:spring-struts:3.2.16.RELEASE'
+    jbossmodules 'org.springframework.ws:spring-xml:2.2.4.RELEASE'
+    jbossmodules "org.eclipse.persistence:org.eclipse.persistence.moxy:$moxyVersion"
+   
+    jbossmodules group: 'com.zaxxer', name: 'HikariCP', version: hikariCpVersion
+}
+

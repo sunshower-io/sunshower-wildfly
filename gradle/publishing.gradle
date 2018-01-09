@@ -1,0 +1,16 @@
+apply plugin: 'maven-publish'
+
+
+task distributionZip(type: Zip, dependsOn: 'assembleAll') {
+    from "${project(":wildfly-dist").projectDir}/build/dist/wildfly-11.0.0.Final"
+}
+
+publishing {
+    publications {
+        distribution(MavenPublication) {
+            groupId 'io.sunshower.wildfly'
+            artifactId 'wildfly-dist'
+            artifact distributionZip
+        }
+    }
+}
