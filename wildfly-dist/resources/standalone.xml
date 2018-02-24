@@ -184,8 +184,6 @@
     <subsystem xmlns="urn:jboss:domain:bean-validation:1.0"/>
     <subsystem xmlns="urn:jboss:domain:datasources:4.0">
       <datasources>
-
-
         <datasource jndi-name="java:jboss/datasources/SunshowerDS-postgres" pool-name="SunshowerDS-postgres"
                     enabled="true"
                     use-java-context="true">

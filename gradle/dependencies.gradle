@@ -24,9 +24,6 @@ repositories {
 
 configurations {
     wildfly
-    configurations.all {
-        exclude module: 'spring-boot-starter-tomcat'
-    }
 }
 
 dependencies {
@@ -40,6 +37,14 @@ dependencies {
     jbossmodules group: 'org.hibernate', name: 'hibernate-core', version: hibernateVersion
     jbossmodules group: 'org.hibernate', name: 'hibernate-envers', version: hibernateVersion
     jbossmodules group: 'org.wildfly', name: 'jipijapa-hibernate5', version: jipijapaVersion
+   
+    [
+            'api',
+            'core',
+            'common'
+    ].each {
+        jbossmodules "io.sunshower.kernel:kernel-$it:$sunshowerKernelVersion"
+    }
 
     jbossmodules "org.atmosphere:atmosphere-runtime:$atmosphereVersion"
 
@@ -54,18 +59,6 @@ dependencies {
         jbossmodules "org.springframework.security:spring-security-$it:${springSecurityVersion}"
     }
     
-    [
-            'spring-boot',
-            'spring-boot-starter-web',
-            'spring-boot-starter-undertow',
-            'spring-boot-starter-cache',
-            'spring-boot-starter-jersey',
-            'spring-boot-autoconfigure',
-            'spring-boot-starter',
-            'spring-boot-configuration-processor'
-    ].each {
-        jbossmodules "org.springframework.boot:$it:$springBootVersion"
-    }
     
     
     [

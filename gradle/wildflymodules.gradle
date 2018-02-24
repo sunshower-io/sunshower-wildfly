@@ -108,7 +108,6 @@ modules {
                 "rxjava-${rxJavaVersion}.jar",
                 "reactive-streams-${reactiveStreamsVersion}.jar"
         ]
-
     }
 
     cacheApi {
@@ -137,33 +136,6 @@ modules {
         ]
     }
 
-    springBoot {
-        moduleName = 'org.springframework.boot'
-        resources = [
-                "spring-boot-${springBootVersion}.jar",
-                "spring-boot-starter-web-${springBootVersion}.jar",
-                "spring-boot-starter-cache-${springBootVersion}.jar",
-                "spring-boot-starter-undertow-${springBootVersion}.jar",
-                "spring-boot-autoconfigure-${springBootVersion}.jar",
-                "spring-boot-starter-jersey-${springBootVersion}.jar",
-                "spring-boot-configuration-processor-${springBootVersion}.jar"
-        ]
-
-        dependencies = [
-                [name: 'org.apache.ignite', export: true],
-                'javax.servlet.api',
-                'javax.validation.api',
-                'org.yaml.snakeyaml',
-                'jaxrs.jersey',
-                'org.springframework.aop',
-                'org.springframework.web',
-                'org.springframework.core',
-                'org.springframework.beans',
-                'org.springframework.context',
-                'org.springframework.security',
-                'org.springframework.context-support'
-        ]
-    }
 
     springSecurity {
         moduleName = 'org.springframework.security'
